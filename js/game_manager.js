@@ -5,6 +5,7 @@ function GameManager(size, InputManager, Actuator, ScoreManager) {
   this.actuator     = new Actuator;
 
   this.startTiles   = 2;
+  this.moved        = false;
 
   this.inputManager.on("move", this.move.bind(this));
   this.inputManager.on("restart", this.restart.bind(this));
@@ -93,7 +94,7 @@ GameManager.prototype.move = function (direction) {
 
   var vector     = this.getVector(direction);
   var traversals = this.buildTraversals(vector);
-  var moved      = false;
+  var moved      = self.moved = false;
 
   // Save the current tile positions and remove merger information
   this.prepareTiles();
@@ -129,7 +130,7 @@ GameManager.prototype.move = function (direction) {
         }
 
         if (!self.positionsEqual(cell, tile)) {
-          moved = true; // The tile moved from its original cell!
+          moved = self.moved = true; // The tile moved from its original cell!
         }
       }
     });
